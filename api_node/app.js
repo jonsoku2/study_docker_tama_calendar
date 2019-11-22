@@ -2,6 +2,7 @@ const express = require('express');
 const dotenv = require('dotenv');
 const morgan = require('morgan');
 const colors = require('colors');
+const errorHandler = require('./middleware/error');
 const bodyParser = require('body-parser');
 const connectDB = require('./config/db');
 const router = require('./routes');
@@ -19,6 +20,9 @@ app.use(bodyParser.json());
 
 // Route files
 app.use(router);
+
+// Router의 catch구문에서 에러를 next()하므로, 이곳으로 넘어온다.
+app.use(errorHandler);
 
 // Dev logging middleware
 if (process.env.NODE_ENV === 'development') {
