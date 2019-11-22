@@ -1,0 +1,26 @@
+version: '3'
+services:
+  redis:
+    image: 'redis:latest'
+  nginx:
+    restart: always
+    image: 'nginx:latest'
+    build:
+      dockerfile: Dockerfile.dev
+      context: ./nginx
+    ports:
+      - '9000:80' # 9000번은 로컬 (리액트와 연결)
+  api_node:
+    build:
+      context: ./api_node
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - ./api_node:/app
+  front:
+    build:
+      context: ./front
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - ./front:/app
